@@ -1,0 +1,55 @@
+package com.lms;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.google.common.collect.Lists;
+import com.lms.entity.Admin;
+import com.lms.entity.AppUser;
+import com.lms.entity.Roles;
+import com.lms.service.repository.AdminRepository;
+import com.lms.service.repository.AppUserRepository;
+import com.lms.service.repository.RoleRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@SpringBootApplication
+public class LmsApplication {
+	private final PasswordEncoder passwordEncoder;
+	private final RoleRepository roleRepository;
+	private final AdminRepository adminRepository;
+	private final AppUserRepository appUserRepository;
+
+	public static void main(String[] args) {
+		SpringApplication.run(LmsApplication.class, args);
+	}
+
+	public CommandLineRunner runner() {
+		return args -> {
+			Roles employee = Roles.builder().roleName("ROLE_EMPLOYEE").build();
+			Roles mentor = Roles.builder().roleName("ROLE_MENTOR").build();
+			Roles admin = Roles.builder().roleName("ROLE_ADMIN").appUser(Lists.newArrayList()).build();
+
+			Admin admin2 = Admin.builder().adminId("te-01").admimName("ravi").build();
+
+			AppUser appUserCredentails = AppUser.builder().username(admin2.getAdmimName())
+					.password(passwordEncoder.encode("qwerty")).roles(Lists.newArrayList()).build();
+
+			roleRepository.save(employee);
+			roleRepository.save(mentor);
+
+			adminRepository.save(admin2);
+
+			appUserCredentails.getRoles().add(admin);
+			admin.getAppUser().add(appUserCredentails);
+
+			roleRepository.save(admin);
+			appUserRepository.save(appUserCredentails);
+
+		};
+
+	}
+}

@@ -1,0 +1,6 @@
+package com.te.lms.dto;
+
+public class MessageDto {
+	private String message;
+	private String emailId;
+}

@@ -1,0 +1,6 @@
+package com.lms.service.repository;
+
+public interface RoleRepository {
+
+	
+}

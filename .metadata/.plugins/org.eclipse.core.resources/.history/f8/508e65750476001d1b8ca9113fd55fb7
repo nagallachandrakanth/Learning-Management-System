@@ -1,0 +1,9 @@
+package com.te.lms.response;
+
+public class ApiResponse<T> {
+	private String message;
+	private String token;
+	private T data;
+	
+
+}

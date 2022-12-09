@@ -1,0 +1,180 @@
+
+package com.te.lms.controller;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.apache.tomcat.websocket.ReadBufferOverflowException;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.te.lms.dto.BatchDto;
+import com.te.lms.dto.ChangeStatusDto;
+import com.te.lms.dto.MentorDto;
+import com.te.lms.dto.MessageDto;
+import com.te.lms.dto.ReasonDto;
+import com.te.lms.dto.RequestDto;
+import com.te.lms.dto.UpdateBatchDto;
+import com.te.lms.dto.UpdateMentorDto;
+import com.te.lms.email.ApproveEmail;
+import com.te.lms.email.RegistrationEmail;
+import com.te.lms.email.RejectEmail;
+import com.te.lms.entity.Batch;
+import com.te.lms.entity.Mentor;
+import com.te.lms.response.ApiResponse;
+import com.te.lms.service.AdminService;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@RestController
+@RequestMapping(path = "/api")
+public class AdminController {
+	private final AdminService adminService;
+	private final RegistrationEmail registrationEmail;
+	private final ApproveEmail approveEmail;
+	private final RejectEmail rejectEmail;
+
+	@PostMapping(path = "/mentor/register")
+	public ApiResponse<String> mentorRegistration(@RequestBody MentorDto mentorDto) {
+		Optional<Mentor> mentor = adminService.mentorRegister(mentorDto);
+		if (mentor.isPresent()) {
+			registrationEmail.sendingEmail("chandramailsender@gmail.com", mentorDto.getEmailId());
+			return new ApiResponse<String>("Mentor Registration Successfull ", null, mentorDto.getMentorName());
+		}
+		throw new RuntimeException("Mentor registration unsuccessfull");
+
+	}
+
+	@PostMapping(path = "/batch/register")
+	public ApiResponse<String> batchRegister(@RequestBody BatchDto batchDto) {
+		Optional<Batch> batch = adminService.register(batchDto);
+		if (batch.isPresent()) {
+			return new ApiResponse<String>("Batch Registration Successfull", null, batchDto.getBatchName());
+		}
+		throw new RuntimeException("Batch Registration UnSuccessfull");
+	}
+
+	/*
+	 * @PostMapping(path = "/request/register") public ApiResponse<String>
+	 * request(@RequestBody RequestDto requestDto) { Optional<Request> request =
+	 * adminService.requestRegister(requestDto); if (request.isPresent()) { return
+	 * new ApiResponse<String>("Request Data Registration Successfull", null,
+	 * requestDto.getEmployeeName()); } throw new
+	 * RuntimeException("Request Registration UnSuccessfull"); }
+	 */
+
+	@PutMapping(path = "/update/mentor/{no}")
+	public ApiResponse<String> updateMentor(@PathVariable("no") Integer no,
+			@RequestBody UpdateMentorDto updateMentorDto) {
+		Optional<Boolean> updateMentor = adminService.updateMentor(no, updateMentorDto);
+		if (updateMentor.get() == true) {
+			return new ApiResponse<String>("Updated data successfull ", null, null);
+		}
+		throw new RuntimeException("No data found for update");
+	}
+
+	@PutMapping(path = "/update/batch/{batchId}")
+	public ApiResponse<String> updateBatch(@PathVariable("batchId") Integer batchId,
+			@RequestBody UpdateBatchDto updateBatchDto) {
+		Optional<Boolean> isChecked = adminService.updateBatch(batchId, updateBatchDto);
+		if (isChecked.isPresent()) {
+			return new ApiResponse<String>("updated data successfull", null, null);
+		}
+		throw new RuntimeException("no data found to update");
+
+	}
+
+	@PutMapping(path = "/delete/batch/{batchId}")
+	public ApiResponse<String> deleteBatch(@PathVariable("batchId") Integer batchId) {
+		Optional<Boolean> batch = adminService.deleteBatch(batchId);
+		if (batch.isPresent()) {
+			return new ApiResponse<String>("Delete Batch Data successfull", null, null);
+		}
+		throw new RuntimeException("Delete Batch Data successfull");
+	}
+
+	@PutMapping(path = "/delete/mentor/{no}")
+	public ApiResponse<String> deleteMentor(@PathVariable("no") Integer no) {
+		Optional<Boolean> deleteMentor = adminService.deleteMentor(no);
+		if (deleteMentor.isPresent()) {
+			return new ApiResponse<String>("Delete Mentor Successfull", null, null);
+		}
+		throw new RuntimeException("Delete Mentor UnSuccessfull");
+
+	}
+
+	@GetMapping(path = "/search/mentor/{no}")
+	public ApiResponse<Object> mentorSearch(@PathVariable("no") Integer no) {
+		Optional<MentorDto> searchMentor = adminService.searchMentor(no);
+		if (searchMentor.isPresent()) {
+			return new ApiResponse<Object>("Search data is present", null, searchMentor.get());
+		}
+		throw new RuntimeException("no data is present");
+	}
+
+	@GetMapping(path = "/search/batch/{batchId}")
+	public ApiResponse<Object> searchBatch(@PathVariable("batchId") Integer batchId) {
+		Optional<BatchDto> searchBatch = adminService.searchBatch(batchId);
+		if (searchBatch.isPresent()) {
+			return new ApiResponse<Object>("search data is present", null, searchBatch.get());
+		}
+		throw new RuntimeException("No Data is present in the database");
+	}
+
+	@PostMapping(path = "/approverequest/employee/{no}")
+	public ApiResponse<String> approveRequest(@PathVariable("no") Integer no,
+			@RequestBody ChangeStatusDto changeStatusDto) {
+		Optional<MessageDto> requestapprove = adminService.requestapprove(no, changeStatusDto);
+		if (requestapprove.isPresent()) {
+			approveEmail.sendingEmail("chandramailsender@gmail.com", requestapprove.get().getEmailId(),
+					requestapprove.get().getMessage());
+			return new ApiResponse<String>("employee request approved", null, null);
+		}
+		throw new RuntimeException("employee request are not approved");
+	}
+
+	@PostMapping(path = "/rejectrequest/employee/{employeeId}")
+	public ApiResponse<String> rejectRequest(@PathVariable("employeeId") Integer employeeId,
+			@RequestBody ReasonDto reasonDto) {
+		Optional<MessageDto> rejectRequst = adminService.rejectRequst(employeeId, reasonDto);
+		if (rejectRequst.isPresent()) {
+			rejectEmail.sendingEmail("chandramailsender@gmail.com", rejectRequst.get().getEmailId(),
+					rejectRequst.get().getMessage());
+			return new ApiResponse<String>("employee request rejected", null, null);
+		}
+		throw new RuntimeException("employee request has been hold");
+	}
+
+	@GetMapping(path = "/batchlist")
+	public ApiResponse<Object> batchList() {
+		Optional<List<BatchDto>> batchlist = adminService.batchlist();
+		if (batchlist.isPresent()) {
+			return new ApiResponse<Object>("batch list data", null, batchlist.get());
+		}
+		throw new RuntimeException("no data found");
+	}
+
+	@GetMapping(path = "/mentorlist")
+	public ApiResponse<Object> mentorList() {
+		Optional<List<MentorDto>> mentorList = adminService.mentorList();
+		if (mentorList.isPresent()) {
+			return new ApiResponse<Object>("Mentor list", null, mentorList.get());
+		}
+		throw new RuntimeException("mentor list not available");
+	}
+
+	public ApiResponse<Object> requestList() {
+		Optional<List<RequestDto>> requestList = adminService.requestList();
+		if (requestList.isPresent()) {
+			return new ApiResponse<Object>("Request Data list", null, requestList.get());
+		}
+		throw new RuntimeException(" request list is not available");
+	}
+
+}

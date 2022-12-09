@@ -1,0 +1,15 @@
+package com.te.lms.repository;
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.te.lms.entity.Mentor;
+
+public interface MentorRepository extends JpaRepository<Mentor, Integer> {
+
+	Optional<Mentor> findByMentorName(String mentorName);
+
+	void save(Optional<Mentor> mentorFromDb);
+
+}

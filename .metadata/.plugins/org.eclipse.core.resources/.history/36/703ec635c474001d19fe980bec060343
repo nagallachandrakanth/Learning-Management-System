@@ -1,0 +1,124 @@
+package com.lms.service.impl;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Lists;
+import com.lms.dto.AddressDetailsDto;
+import com.lms.dto.ContactDto;
+import com.lms.dto.EducationalDetailsDto;
+import com.lms.dto.ExperienceDto;
+import com.lms.dto.RegistrationDto;
+import com.lms.dto.TechnicalSkillsDto;
+import com.lms.entity.AddressDetails;
+import com.lms.entity.BankDetails;
+import com.lms.entity.Contact;
+import com.lms.entity.EducationalDetails;
+import com.lms.entity.Employee;
+import com.lms.entity.Experience;
+import com.lms.entity.SecondaryInfo;
+import com.lms.entity.TechnicalSkills;
+import com.lms.service.EmsService;
+import com.lms.service.repository.EmsRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Service
+public class EmsServiceImpl implements EmsService {
+	private final EmsRepository emsRepository;
+
+	public Employee convertDtoToEntity(RegistrationDto registrationDto) {
+		Employee employee = new Employee();
+		List<EducationalDetails> educationalDetails = Lists.newArrayList();
+		List<AddressDetails> addressDetails = Lists.newArrayList();
+		List<TechnicalSkills> technicalSkills = Lists.newArrayList();
+		List<Experience> experience = Lists.newArrayList();
+		List<Contact> contact = Lists.newArrayList();
+
+		employee.setEmployeeName(registrationDto.getEmployeeName());
+		employee.setEmployeeDOJ(registrationDto.getEmployeeDOJ());
+		employee.setEmployeeDOB(registrationDto.getEmployeeDOB());
+		employee.setEmployeeEmailId(registrationDto.getEmployeeEmailId());
+		employee.setEmployeeBloodGroup(registrationDto.getEmployeeBloodGroup());
+		employee.setEmployeeDesignation(registrationDto.getEmployeeDesignation());
+		employee.setEmployeeGender(registrationDto.getEmployeeGender());
+		employee.setEmployeeNationality(registrationDto.getEmployeeNationality());
+		employee.setEmployeeStatus(registrationDto.getEmployeeStatus());
+
+		SecondaryInfo secondaryInfo = new SecondaryInfo();
+		BeanUtils.copyProperties(registrationDto.getSecondaryInfoDto(), secondaryInfo);
+		employee.setSecondaryInfo(secondaryInfo);
+
+		BankDetails bankDetails = new BankDetails();
+		BeanUtils.copyProperties(registrationDto.getBankDetailsDto(), bankDetails);
+		employee.setBankDetails(bankDetails);
+
+		for (EducationalDetailsDto educationalDetailsDto : registrationDto.getEducationalDetailsDto()) {
+			EducationalDetails educationalDetailsentity = new EducationalDetails();
+			BeanUtils.copyProperties(educationalDetailsDto, educationalDetailsentity);
+			educationalDetails.add(educationalDetailsentity);
+
+		}
+		employee.setEducationalDetails(educationalDetails);
+		for (EducationalDetails educational : educationalDetails) {
+			educational.setEmployee(employee);
+		}
+
+		for (AddressDetailsDto addressDetailsDto : registrationDto.getAddressDetailsDto()) {
+			AddressDetails addressDetailsentity = new AddressDetails();
+			BeanUtils.copyProperties(addressDetailsDto, addressDetailsentity);
+			addressDetails.add(addressDetailsentity);
+		}
+		employee.setAddressDetails(addressDetails);
+		for (AddressDetails address : addressDetails) {
+			address.setEmployee(employee);
+		}
+
+		for (TechnicalSkillsDto technicalSkillsDto : registrationDto.getTechnicalSkillsDto()) {
+			TechnicalSkills technicalSkillsentity = new TechnicalSkills();
+			BeanUtils.copyProperties(technicalSkillsDto, technicalSkillsentity);
+			technicalSkills.add(technicalSkillsentity);
+		}
+		employee.setTechnicalSkills(technicalSkills);
+		for (TechnicalSkills technical : technicalSkills) {
+			technical.setEmployee(employee);
+		}
+
+		for (ExperienceDto experienceDto : registrationDto.getExperienceDto()) {
+			Experience experienceEntity = new Experience();
+			BeanUtils.copyProperties(experienceDto, experienceEntity);
+			experience.add(experienceEntity);
+		}
+		employee.setExperience(experience);
+		for (Experience experien : experience) {
+			experien.setEmployee(employee);
+		}
+
+		for (ContactDto contactDto : registrationDto.getContactDto()) {
+			Contact contactEntity = new Contact();
+			BeanUtils.copyProperties(contactDto, contactEntity);
+			contact.add(contactEntity);
+		}
+		for (Contact con : contact) {
+			con.setEmployee(employee);
+		}
+		return employee;
+	}
+
+	@Override
+	public Employee registrationEmployee(RegistrationDto registrationDto) {
+		Employee employee = convertDtoToEntity(registrationDto);
+		return emsRepository.save(employee);
+	}
+
+	@Override
+	public Optional<Employee> getData(Integer employeeId) {
+		return emsRepository.findByemployeeId(employeeId);
+
+	}
+
+}

@@ -1,0 +1,82 @@
+
+Œ
+java:S2293t"YReplace the type specification in this constructor call with the diamond operator ("<>").( »›8½¡Á’Ï0HÜZRMINORZ
+CODE_SMELL
+
+java:S2293‰"YReplace the type specification in this constructor call with the diamond operator ("<>").(“îÒ¼8‡€’…Ï0H‹KRMINORZ
+CODE_SMELL
+f
+java:S3655L";Call "updateMentor.isPresent()" before accessing the value.(ûÅ˜J8Ò›îƒÏ0HøIRMAJORZBUG
+x	java:S112<"FDefine and throw a dedicated exception instead of using a generic one.(Ã®›†8Ó·Ê•Ï0H´bRMAJORZ
+CODE_SMELL
+\
+java:S5411L"*Use the primitive boolean expression here.(ûÅ˜J8Ò›îƒÏ0HõIRMINORZ
+CODE_SMELL
+Œ
+java:S2293:"YReplace the type specification in this constructor call with the diamond operator ("<>").(¸êöÅ8è‰¶Ï0HŞRRMINORZ
+CODE_SMELL
+x	java:S112c"FDefine and throw a dedicated exception instead of using a generic one.(û“ªÓ8äıÄ€Ï0HªFRMAJORZ
+CODE_SMELL
+}	java:S112O"FDefine and throw a dedicated exception instead of using a generic one.(‚å®øÿÿÿÿ8æÅÿÜÎ0HŒERMAJORZ
+CODE_SMELL
+Œ
+java:S2293a"YReplace the type specification in this constructor call with the diamond operator ("<>").(†÷ÌŞ8ß»ÆÏ0HÑXRMINORZ
+CODE_SMELL
+}	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(ŠÎıÎüÿÿÿÿ8¿ı¢áÎ0HERMAJORZ
+CODE_SMELL
+Œ
+java:S2293j"YReplace the type specification in this constructor call with the diamond operator ("<>").(Ã¡ÁÖ8Ä¯²âÎ0H‘ERMINORZ
+CODE_SMELL
+Œ
+java:S2293}"YReplace the type specification in this constructor call with the diamond operator ("<>").(™Óê‚8äıÄ€Ï0H«FRMINORZ
+CODE_SMELL
+
+java:S2293§"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÄİÚé8«óÅ•Ï0HbRMINORZ
+CODE_SMELL
+~	java:S112©"FDefine and throw a dedicated exception instead of using a generic one.(Şê”„ûÿÿÿÿ8éµıİÎ0H‡ERMAJORZ
+CODE_SMELL
+†
+java:S1128"TRemove this unused import 'org.apache.tomcat.websocket.ReadBufferOverflowException'.(üœ°8°íÁ–Ï0HËeRMINORZ
+CODE_SMELL
+~	java:S112²"FDefine and throw a dedicated exception instead of using a generic one.(ÀØì°ÿÿÿÿÿ8°íÁ–Ï0HÈeRMAJORZ
+CODE_SMELL
+
+java:S2293°"YReplace the type specification in this constructor call with the diamond operator ("<>").(·ÎŞ8°íÁ–Ï0HÉeRMINORZ
+CODE_SMELL
+’
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ú‰†Äûÿÿÿÿ8á´êÏ0HûGRMINORZ
+CODE_SMELL
+y	java:S112—"FDefine and throw a dedicated exception instead of using a generic one.(£Òµ8Û±âÎ0HERMAJORZ
+CODE_SMELL
+x	java:S112Y"FDefine and throw a dedicated exception instead of using a generic one.(Ğà­ø8ÌÀÄ’Ï0HñZRMAJORZ
+CODE_SMELL
+‘
+java:S2293M"YReplace the type specification in this constructor call with the diamond operator ("<>").(¸Õúòÿÿÿÿÿ8Ò›îƒÏ0HóIRMINORZ
+CODE_SMELL
+Y
+java:S1125L"'Remove the unnecessary boolean literal.(ûÅ˜J8Ò›îƒÏ0HùIRMINORZ
+CODE_SMELL
+~	java:S112‹"FDefine and throw a dedicated exception instead of using a generic one.(Öú–§úÿÿÿÿ8ÒÀ”…Ï0H¡KRMAJORZ
+CODE_SMELL
+Œ
+java:S22930"YReplace the type specification in this constructor call with the diamond operator ("<>").(µû›š8†èœáÎ0HˆERMINORZ
+CODE_SMELL
+w	java:S112v"FDefine and throw a dedicated exception instead of using a generic one.(ß·è8è¶ºÏ0HıRRMAJORZ
+CODE_SMELL
+y	java:S112 "FDefine and throw a dedicated exception instead of using a generic one.(û¼•8¹¼ŒŞÎ0H†ERMAJORZ
+CODE_SMELL
+
+java:S2293•"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÅÕÒ¤8õ«öİÎ0H„ERMINORZ
+CODE_SMELL
+m	java:S125B"<This block of commented-out lines of code should be removed.(¢²°T8ÉÑ‹‰Ï0H¤MRMAJORZ
+CODE_SMELL
+}	java:S1122"FDefine and throw a dedicated exception instead of using a generic one.(Ğ±Ä­úÿÿÿÿ8ß»ÆÏ0HĞXRMAJORZ
+CODE_SMELL
+x	java:S112l"FDefine and throw a dedicated exception instead of using a generic one.(Üúåİ8ã›íÏ0HˆHRMAJORZ
+CODE_SMELL
+‘
+java:S2293W"YReplace the type specification in this constructor call with the diamond operator ("<>").(–šŸäüÿÿÿÿ8áæ‰ŞÎ0HERMINORZ
+CODE_SMELL
+—
+java:S1192/"\Define a constant instead of duplicating this literal "chandramailsender@gmail.com" 3 times.(Ùí„—ùÿÿÿÿ8²®¸Ï0H‰XRCRITICALZ
+CODE_SMELL

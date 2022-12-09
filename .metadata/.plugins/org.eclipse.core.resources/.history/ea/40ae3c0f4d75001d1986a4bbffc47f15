@@ -1,0 +1,9 @@
+package com.lms.service;
+
+import com.lms.dto.BatchDto;
+
+public interface AdminService {
+
+	void register(BatchDto batchDto);
+
+}

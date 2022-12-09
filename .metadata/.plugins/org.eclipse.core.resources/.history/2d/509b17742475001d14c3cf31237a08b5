@@ -1,0 +1,6 @@
+package com.lms.entity;
+
+public class AppUser {
+	private String username;
+	private String password;
+}

@@ -1,0 +1,25 @@
+
+k
+java:S1128"9Remove this unused import 'javax.activation.DataHandler'.(ßÕˆ>8©ä¯Ï0HÔWRMINORZ
+CODE_SMELL
+k
+java:S1128"8Remove this unused import 'javax.activation.DataSource'.(ÊÌâó8©ä¯Ï0HÖWRMINORZ
+CODE_SMELL
+o
+java:S1128"<Remove this unused import 'javax.activation.FileDataSource'.(¬Ï”ë8©ä¯Ï0HØWRMINORZ
+CODE_SMELL
+i	java:S1065"9Replace this use of System.out or System.err by a logger.(áŞÁËÿÿÿÿÿHÀWRMAJORZ
+CODE_SMELL
+p
+java:S1128"=Remove this unused import 'javax.mail.internet.MimeBodyPart'.(Œõ²İ8©ä¯Ï0HÜWRMINORZ
+CODE_SMELL
+i	java:S106J"9Replace this use of System.out or System.err by a logger.(©ÅĞÅşÿÿÿÿHÂWRMAJORZ
+CODE_SMELL
+s	java:S1258"<This block of commented-out lines of code should be removed.(ä™ùÿÿÿÿ8©ä¯Ï0HËWRMAJORZ
+CODE_SMELL
+d
+java:S1128"1Remove this unused import 'javax.mail.Multipart'.( ÆŸ8©ä¯Ï0HÚWRMINORZ
+CODE_SMELL
+p
+java:S1128">Remove this unused import 'javax.mail.internet.MimeMultipart'.(Ğşÿq8©ä¯Ï0HŞWRMINORZ
+CODE_SMELL

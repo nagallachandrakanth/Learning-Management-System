@@ -1,0 +1,10 @@
+
+p
+java:S1128"8Remove this unused import 'javax.persistence.ManyToOne'.(ÇÑ²øÿÿÿÿ8»ø—äÎ0H©?RMINORZ
+CODE_SMELL
+k
+java:S1128"9Remove this unused import 'javax.persistence.ManyToMany'.(Àğ½8îÿäçÎ0HÁ?RMINORZ
+CODE_SMELL
+…
+java:S22936"YReplace the type specification in this constructor call with the diamond operator ("<>").(ú§–H«?RMINORZ
+CODE_SMELL

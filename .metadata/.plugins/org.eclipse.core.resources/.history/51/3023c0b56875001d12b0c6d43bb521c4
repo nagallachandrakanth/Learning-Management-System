@@ -1,0 +1,18 @@
+package com.te.lms.service.repository;
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.te.lms.entity.Employee;
+import com.te.lms.entity.SecondaryInfo;
+
+@Repository
+public interface EmsRepository extends JpaRepository<Employee, Integer> {
+
+	SecondaryInfo save(SecondaryInfo secondaryInfo);
+
+//	Optional<Employee> findByemployeeId(Integer employeeId);
+
+}

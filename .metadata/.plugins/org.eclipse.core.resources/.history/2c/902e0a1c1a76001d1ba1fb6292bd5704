@@ -1,0 +1,27 @@
+package com.te.lms.service;
+
+import java.util.Optional;
+
+import com.te.lms.dto.BatchDto;
+import com.te.lms.dto.MentorDto;
+import com.te.lms.dto.RequestDto;
+import com.te.lms.dto.UpdateMentorDto;
+import com.te.lms.entity.Batch;
+import com.te.lms.entity.Mentor;
+import com.te.lms.entity.Request;
+
+public interface AdminService {
+
+	Optional<Batch> register(BatchDto batchDto);
+
+	Optional<Mentor> mentorRegister(MentorDto mentorDto);
+
+	Optional<Request> requestRegister(RequestDto requestDto);
+
+	void updateMentor(Integer no, UpdateMentorDto updateMentorDto);
+
+	void deleteMentor(Integer no);
+
+	void deleteBatch(Integer batchId);
+
+}

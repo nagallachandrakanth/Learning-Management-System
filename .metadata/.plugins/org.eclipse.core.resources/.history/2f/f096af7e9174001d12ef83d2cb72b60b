@@ -1,0 +1,5 @@
+package com.lms.entity.enums;
+
+public enum Status {
+	INPROGRESS("INPROGRESS"), COMPLETED("COMPLETED"),TO BE STARTED("TO BE STARTED");
+}

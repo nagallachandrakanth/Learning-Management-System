@@ -1,0 +1,13 @@
+
+Š
+java:S22937"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÙˆÍÄşÿÿÿÿHORMINORZ
+CODE_SMELL
+k
+java:S1128"9Remove this unused import 'javax.persistence.ManyToMany'.(Àğ½8ßüèçÎ0HORMINORZ
+CODE_SMELL
+
+java:S1128"MRemove this unused import 'org.hibernate.id.enhanced.SequenceStyleGenerator'.(Ü÷ê&8úàÑåÎ0H‹ORMINORZ
+CODE_SMELL
+‘
+java:S2293J"YReplace the type specification in this constructor call with the diamond operator ("<>").(ëì‚‘üÿÿÿÿ8É±«‹Ï0H€PRMINORZ
+CODE_SMELL

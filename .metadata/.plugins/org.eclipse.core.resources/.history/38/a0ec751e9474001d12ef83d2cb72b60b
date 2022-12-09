@@ -1,0 +1,12 @@
+package com.lms.entity;
+
+public class Request {
+	private Integer no;
+	private String employeeId;
+	private String employeeName;
+	private Integer yop;
+	private String percentage;
+	private String experience;
+	private String contactNo;
+
+}

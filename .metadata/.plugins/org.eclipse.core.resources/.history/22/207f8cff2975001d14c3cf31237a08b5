@@ -1,0 +1,33 @@
+package com.lms;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.google.common.collect.Lists;
+import com.lms.entity.Admin;
+import com.lms.entity.AppUser;
+import com.lms.entity.Roles;
+
+@SpringBootApplication
+public class LmsApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(LmsApplication.class, args);
+	}
+
+	public CommandLineRunner runner() {
+		return args -> {
+			Roles employee = Roles.builder().roleName("ROLE_Employee").build();
+			Roles mentor = Roles.builder().roleName("ROLE_MENTOR").build();
+			Roles admin = Roles.builder().roleName("ROLE_ADMIN").appUser(Lists.newArrayList()).build();
+
+			Admin admin2 = Admin.builder().adminId("ravi").admimName("qwerty").build();
+
+			AppUser appUserCredentails = AppUser.builder().username(admin2.getAdminId()).password(admin2.getAdmimName())
+					.build();
+
+		};
+
+	}
+}

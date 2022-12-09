@@ -1,0 +1,6 @@
+package com.te.lms.dto;
+
+public class Snippet {
+	Request Data Registration Successfull
+}
+

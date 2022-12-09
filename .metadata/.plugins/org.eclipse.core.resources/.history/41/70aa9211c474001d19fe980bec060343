@@ -1,0 +1,56 @@
+package com.lms.dto;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
+import com.lms.entity.AddressDetails;
+import com.lms.entity.BankDetails;
+import com.lms.entity.Contact;
+import com.lms.entity.EducationalDetails;
+import com.lms.entity.Experience;
+import com.lms.entity.SecondaryInfo;
+import com.lms.entity.TechnicalSkills;
+import com.lms.entity.enums.Designation;
+import com.lms.entity.enums.EmployeeStatus;
+import com.lms.entity.enums.Gender;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@Builder
+
+public class RegistrationDto {
+	private Integer employeeId;
+	@NotBlank(message = "user name can not be empty")
+	private String employeeName;
+	private LocalDate employeeDOJ;
+	private LocalDate employeeDOB;
+	@Email
+	private String employeeEmailId;
+	private String employeeBloodGroup;
+	private Designation employeeDesignation;
+	private Gender employeeGender;
+	private String employeeNationality;
+	private EmployeeStatus employeeStatus;
+
+	private SecondaryInfoDto secondaryInfoDto;
+	private List<EducationalDetailsDto> educationalDetailsDto;
+	private List<AddressDetailsDto> addressDetailsDto;
+	private BankDetailsDto bankDetailsDto;
+	private List<TechnicalSkillsDto> technicalSkillsDto;
+	private List<ExperienceDto> experienceDto;
+	private List<ContactDto> contactDto;
+
+}

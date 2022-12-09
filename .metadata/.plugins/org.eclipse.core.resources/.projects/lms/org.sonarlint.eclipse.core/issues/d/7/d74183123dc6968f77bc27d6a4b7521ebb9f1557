@@ -1,0 +1,7 @@
+
+g
+java:S1128";Remove this unused import 'com.te.lms.entity.enums.Status'.(ýöÇËH¡HRMINORZ
+CODE_SMELL
+Œ
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(âÀÿì8¢Å‡‚Ï0H¦HRMINORZ
+CODE_SMELL

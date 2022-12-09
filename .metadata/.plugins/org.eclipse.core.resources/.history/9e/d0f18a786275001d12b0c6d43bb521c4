@@ -1,0 +1,13 @@
+package com.lms.service;
+
+import com.lms.dto.BatchDto;
+import com.lms.dto.MentorDto;
+import com.lms.entity.Mentor;
+
+public interface AdminService {
+
+	void register(BatchDto batchDto);
+
+	Mentor mentorRegister(MentorDto mentorDto);
+
+}

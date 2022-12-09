@@ -1,0 +1,102 @@
+package com.lms.entity;
+
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
+import com.lms.entity.enums.Designation;
+import com.lms.entity.enums.EmployeeStatus;
+import com.lms.entity.enums.Gender;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+
+@Table(name = "primary_info")
+public class Employee implements Serializable {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "employee_id")
+	private Integer employeeId;
+
+	@Column(name = "employee_name")
+	@NotBlank(message = "user name can not be empty")
+	private String employeeName;
+
+	@Column(name = "employee_doj")
+	private LocalDate employeeDOJ;
+
+	@Column(name = "employee_dob")
+	private LocalDate employeeDOB;
+
+	@Column(name = "employee_email_id")
+	@Email
+	private String employeeEmailId;
+
+	@Column(name = "employee_blood_group")
+	private String employeeBloodGroup;
+
+	@Column(name = "employee_designation")
+	@Enumerated(EnumType.STRING)
+	private Designation employeeDesignation;
+
+	@Column(name = "employee_gender")
+	@Enumerated(EnumType.STRING)
+	private Gender employeeGender;
+
+	@Column(name = "employee_nationality")
+	private String employeeNationality;
+
+	@Column(name = "employee_status")
+	@Enumerated(EnumType.STRING)
+	private EmployeeStatus employeeStatus;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "sec_fk")
+	private SecondaryInfo secondaryInfo;
+
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	private List<EducationalDetails> educationalDetails;
+
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	private List<AddressDetails> addressDetails;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "bank_fk")
+	private BankDetails bankDetails;
+
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	private List<TechnicalSkills> technicalSkills;
+
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	private List<Experience> experience;
+
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	private List<Contact> contact;
+
+}

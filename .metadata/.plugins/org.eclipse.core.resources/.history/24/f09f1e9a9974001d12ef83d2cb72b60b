@@ -1,0 +1,48 @@
+package com.lms.entity;
+
+import java.time.LocalDate;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import com.lms.entity.enums.Status;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+public class Batch {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "no")
+	private Integer no;
+	@Column(name = "batch_id")
+	
+	
+	
+	private String batchId;
+	@Column(name = "batch_name")
+	private String batchName;
+	@Column(name = "mentor_name")
+	private String mentorName;
+	@Column(name = "technologies")
+	private String technologies;
+	@Column(name = "start_date")
+	private LocalDate startDate;
+	@Column(name = "end_date")
+	private LocalDate endDate;
+	@Column(name = "status")
+	private Status status;
+
+}

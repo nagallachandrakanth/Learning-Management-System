@@ -1,0 +1,65 @@
+
+package com.lms.dto;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
+import com.lms.entity.enums.Status;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+public class BatchDto {
+
+	private Integer no;
+
+	@Column(name = "batch_id")
+
+	private String batchId;
+
+	@Column(name = "batch_name")
+	private String batchName;
+
+	@Column(name = "mentor_name")
+	private String mentorName;
+
+	@Column(name = "technologies")
+	@ManyToMany(mappedBy = "batch",cascade = CascadeType.ALL)
+	private List<TechnologiesDto> technologies=new ArrayList<TechnologiesDto>();
+
+	@Column(name = "start_date")
+	private LocalDate startDate;
+
+	@Column(name = "end_date")
+	private LocalDate endDate;
+
+	@Column(name = "status")
+
+	@Enumerated(EnumType.STRING)
+	private Status status;
+	
+	
+	@OneToMany(mappedBy = "batch",cascade = CascadeType.ALL)
+	private List<Mentor> mentor;
+
+}

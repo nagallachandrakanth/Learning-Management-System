@@ -1,0 +1,12 @@
+package com.te.lms.service.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.te.lms.entity.Admin;
+import com.te.lms.entity.Batch;
+
+public interface AdminRepository extends JpaRepository<Admin, String> {
+
+	void save(Batch batch);
+
+}

@@ -1,0 +1,331 @@
+package com.te.lms.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Lists;
+import com.te.lms.dto.BatchDto;
+import com.te.lms.dto.BatchTechnologiesDto;
+import com.te.lms.dto.ChangeStatusDto;
+import com.te.lms.dto.MentorDto;
+import com.te.lms.dto.MentorTechnologiesDto;
+import com.te.lms.dto.MessageDto;
+import com.te.lms.dto.ReasonDto;
+import com.te.lms.dto.RequestDto;
+import com.te.lms.dto.UpdateBatchDto;
+import com.te.lms.dto.UpdateMentorDto;
+import com.te.lms.entity.AppUser;
+import com.te.lms.entity.Batch;
+import com.te.lms.entity.BatchTechnologies;
+import com.te.lms.entity.Employee;
+import com.te.lms.entity.Mentor;
+import com.te.lms.entity.MentorTechnologies;
+import com.te.lms.entity.Request;
+import com.te.lms.entity.Roles;
+import com.te.lms.entity.enums.AdminStatus;
+import com.te.lms.entity.enums.EmployeeStatus;
+import com.te.lms.entity.enums.Status;
+import com.te.lms.repository.AdminRepository;
+import com.te.lms.repository.AppUserRepository;
+import com.te.lms.repository.BatchRepository;
+import com.te.lms.repository.EmsRepository;
+import com.te.lms.repository.MentorRepository;
+import com.te.lms.repository.RequestRepository;
+import com.te.lms.repository.RoleRepository;
+import com.te.lms.service.AdminService;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Service
+public class AdminServiceImpl implements AdminService {
+	private final AdminRepository adminRepository;
+	private final MentorRepository mentorRepository;
+	private final BatchRepository batchRepository;
+	private final EmsRepository emsRepository;
+	private final RequestRepository requestRepository;
+	private final RoleRepository roleRepository;
+	private final AppUserRepository appUserRepository;
+
+	@Override
+	public Optional<Batch> register(BatchDto batchDto) {
+		Batch batch = new Batch();
+		BeanUtils.copyProperties(batchDto, batch);
+		List<BatchTechnologies> technologies = new ArrayList<BatchTechnologies>();
+		for (BatchTechnologiesDto technologiesDto : batchDto.getBatchTechnologiesDto()) {
+			BatchTechnologies technologiesEntity = new BatchTechnologies();
+			BeanUtils.copyProperties(technologiesDto, technologiesEntity);
+			technologies.add(technologiesEntity);
+		}
+		batch.setBatchTechnologies(technologies);
+
+		Optional<Mentor> mentor = mentorRepository.findByMentorName(batchDto.getMentorName());
+		batch.setMentor(mentor.get());
+		mentor.get().setBatch(batch);
+
+		for (BatchTechnologies techno : technologies) {
+			techno.setBatch(batch);
+		}
+		if (batch.getStartDate() != null && batch.getEndDate() == null) {
+			batch.setStatus(Status.INPROGRESS);
+		}
+		if (batch.getStartDate() != null && batch.getEndDate() != null) {
+			batch.setStatus(Status.COMPLETED);
+		}
+		if (batch.getStartDate() == null && batch.getEndDate() == null) {
+			batch.setStatus(Status.TOBESTARTED);
+		}
+		batch.setBatchStatus(AdminStatus.ACTIVE);
+		return Optional.ofNullable(batchRepository.save(batch));
+
+	}
+
+	@Override
+	public Optional<Mentor> mentorRegister(MentorDto mentorDto) {
+		Mentor mentor = new Mentor();
+		List<MentorTechnologies> technologies = new ArrayList<MentorTechnologies>();
+		BeanUtils.copyProperties(mentorDto, mentor);
+		for (MentorTechnologiesDto technologiesDto : mentorDto.getSkillsDto()) {
+			MentorTechnologies technologiesEntity = new MentorTechnologies();
+			BeanUtils.copyProperties(technologiesDto, technologiesEntity);
+			technologies.add(technologiesEntity);
+			technologiesEntity.setMentor(mentor);
+		}
+		mentor.setSkills(technologies);
+		mentor.setStatus(AdminStatus.ACTIVE);
+
+		return Optional.ofNullable(mentorRepository.save(mentor));
+	}
+
+	/*
+	 * @Override public Optional<Request> requestRegister(RequestDto requestDto) {
+	 * Optional<Employee> employee =
+	 * emsRepository.findById(requestDto.getEmployeeId()); if (employee.isPresent())
+	 * { requestDto.setEmployeeId(employee.get().getEmployeeId());
+	 * requestDto.setEmployeeName(employee.get().getEmployeeName());
+	 * requestDto.setYop(employee.get().getEducationalDetails().get(0).
+	 * getYearOfPassing());
+	 * requestDto.setPercentage(employee.get().getEducationalDetails().get(0).
+	 * getPercentage());
+	 * requestDto.setExperience(employee.get().getTechnicalSkills().get(0).
+	 * getYearOfExperience());
+	 * requestDto.setContactNo(employee.get().getContact().get(0).getContactNumber()
+	 * ); } Request request = new Request(); BeanUtils.copyProperties(requestDto,
+	 * request);
+	 * 
+	 * return Optional.ofNullable(requestRepository.save(request));
+	 * 
+	 * }
+	 */
+
+	@Override
+	public Optional<Boolean> updateMentor(Integer no, UpdateMentorDto updateMentorDto) {
+		Optional<Mentor> mentorFromDb = mentorRepository.findById(no);
+		if (mentorFromDb.isPresent()) {
+			mentorFromDb.get().setMentorName(updateMentorDto.getMentorName());
+			mentorFromDb.get().setEmailId(updateMentorDto.getEmailId());
+			for (MentorTechnologiesDto mentorTechnologiesDto : updateMentorDto.getSkillsDto()) {
+				MentorTechnologies mentorTechnologies = new MentorTechnologies();
+				BeanUtils.copyProperties(mentorTechnologiesDto, mentorTechnologies);
+				mentorFromDb.get().getSkills().add(mentorTechnologies);
+			}
+			mentorRepository.save(mentorFromDb.get());
+			return Optional.ofNullable(true);
+		}
+		return Optional.ofNullable(false);
+
+	}
+
+	@Override
+	public Optional<Boolean> updateBatch(Integer batchId, UpdateBatchDto updateBatchDto) {
+		Optional<Batch> batchDb = batchRepository.findById(batchId);
+		if (batchDb.isPresent()) {
+			batchDb.get().setBatchName(updateBatchDto.getBatchName());
+			batchDb.get().setStartDate(updateBatchDto.getStartDate());
+			batchDb.get().setEndDate(updateBatchDto.getEndDate());
+			for (BatchTechnologiesDto technologiesDto : updateBatchDto.getBatchTechnologiesDto()) {
+				BatchTechnologies batchTechnologies = new BatchTechnologies();
+				BeanUtils.copyProperties(technologiesDto, batchTechnologies);
+				batchDb.get().getBatchTechnologies().add(batchTechnologies);
+			}
+			batchRepository.save(batchDb.get());
+			return Optional.ofNullable(true);
+		}
+		return Optional.ofNullable(false);
+
+	}
+
+	@Override
+	public Optional<Boolean> deleteMentor(Integer no) {
+		Optional<Mentor> mentor = mentorRepository.findById(no);
+		if (mentor.isPresent()) {
+			mentor.get().setStatus(AdminStatus.INACTIVE);
+			mentorRepository.save(mentor.get());
+			return Optional.ofNullable(true);
+		}
+		return Optional.ofNullable(false);
+
+	}
+
+	@Override
+	public Optional<Boolean> deleteBatch(Integer batchId) {
+		Optional<Batch> batch = batchRepository.findById(batchId);
+		if (batch.isPresent()) {
+			batch.get().setBatchStatus(AdminStatus.INACTIVE);
+			batchRepository.save(batch.get());
+			return Optional.ofNullable(true);
+		}
+		return Optional.ofNullable(false);
+	}
+
+	@Override
+	public Optional<MentorDto> searchMentor(Integer no) {
+		Optional<Mentor> mentorDb = mentorRepository.findById(no);
+		if (mentorDb.isPresent()) {
+			MentorDto mentorDto = new MentorDto();
+			BeanUtils.copyProperties(mentorDb.get(), mentorDto);
+			for (MentorTechnologies mentorDataBase : mentorDb.get().getSkills()) {
+				MentorTechnologiesDto mentorTechnologiesDto = new MentorTechnologiesDto();
+				BeanUtils.copyProperties(mentorDataBase, mentorTechnologiesDto);
+				mentorDto.getSkillsDto().add(mentorTechnologiesDto);
+			}
+			return Optional.ofNullable(mentorDto);
+
+		}
+		return null;
+
+	}
+
+	@Override
+	public Optional<BatchDto> searchBatch(Integer batchId) {
+		Optional<Batch> batchDb = batchRepository.findById(batchId);
+		if (batchDb.isPresent()) {
+			BatchDto batchDto = new BatchDto();
+			BeanUtils.copyProperties(batchDb.get(), batchDto);
+			for (BatchTechnologies technologiesEntity : batchDb.get().getBatchTechnologies()) {
+				BatchTechnologiesDto batchTechnologiesDto = new BatchTechnologiesDto();
+				BeanUtils.copyProperties(technologiesEntity, batchTechnologiesDto);
+				batchDto.getBatchTechnologiesDto().add(batchTechnologiesDto);
+			}
+			return Optional.ofNullable(batchDto);
+		}
+		return null;
+	}
+
+	@Override
+	public Optional<MessageDto> requestapprove(Integer no, ChangeStatusDto changeStatusDto) {
+		Optional<Request> requestFromDb = requestRepository.findById(no);
+		if (requestFromDb.isPresent()) {
+			Optional<Employee> employeeFromDb = emsRepository.findById(no);
+			if (employeeFromDb.isPresent()) {
+				Optional<Roles> rolesFromDb = roleRepository.findByRoleName("ROLE_EMPLOYEE");
+				if (rolesFromDb.isPresent()) {
+					AppUser appUser = AppUser.builder().username("te-01").password("qwerty").roles(Lists.newArrayList())
+							.build();
+					appUser.getRoles().add(rolesFromDb.get());
+					Optional<Batch> batchFromDb = batchRepository.findById(changeStatusDto.getBatchId());
+					employeeFromDb.get().setBatch(batchFromDb.get());
+					batchFromDb.get().getEmployee().add(employeeFromDb.get());
+					emsRepository.save(employeeFromDb.get());
+					appUserRepository.save(appUser);
+					batchRepository.save(batchFromDb.get());
+					requestRepository.deleteById(no);
+					String message = "Hello" + employeeFromDb.get().getEmployeeName() + "\n"
+							+ "welcome to the technoelevate team" + "\n" + "username:" + appUser.getUsername() + "/n"
+							+ "password:" + appUser.getPassword();
+					MessageDto messageDto = MessageDto.builder().message(message)
+							.emailId(employeeFromDb.get().getEmployeeEmailId()).build();
+					return Optional.ofNullable(messageDto);
+				}
+			}
+
+		}
+		return null;
+	}
+
+	@Override
+	public Optional<MessageDto> rejectRequst(Integer employeeId, ReasonDto reasonDto) {
+		Optional<Request> requestData = requestRepository.findById(employeeId);
+		if (requestData.isPresent()) {
+			Optional<Employee> employeeFromDb = emsRepository.findById(employeeId);
+			employeeFromDb.get().setEmployeeStatus(EmployeeStatus.INACTIVE);
+			requestRepository.deleteById(employeeId);
+			String message = "Hello" + employeeFromDb.get().getEmployeeName() + " "
+					+ "we are sorry to inform you that your application has been rejected" + reasonDto.getReason();
+			MessageDto messageDto = MessageDto.builder().emailId(employeeFromDb.get().getEmployeeEmailId())
+					.message(message).build();
+			return Optional.ofNullable(messageDto);
+		}
+		return Optional.ofNullable(null);
+	}
+
+	@Override
+	public Optional<List<BatchDto>> batchlist() {
+		List<Batch> batchDataFromDb = batchRepository.findAll();
+		if (batchDataFromDb != null) {
+			List<BatchDto> batchDto = new ArrayList<BatchDto>();
+			for (Batch batchEntity : batchDataFromDb) {
+				BatchDto batch = new BatchDto();
+				BeanUtils.copyProperties(batchEntity, batch);
+				List<BatchTechnologiesDto> batchTechnologiesDtos = Lists.newArrayList();
+				for (BatchTechnologies batchEntityCopy : batchEntity.getBatchTechnologies()) {
+					BatchTechnologiesDto batchTechnologiesDto = new BatchTechnologiesDto();
+					BeanUtils.copyProperties(batchEntityCopy, batchTechnologiesDto);
+
+					batchTechnologiesDtos.add(batchTechnologiesDto);
+				}
+				batch.setBatchTechnologiesDto(batchTechnologiesDtos);
+				batchDto.add(batch);
+
+			}
+			return Optional.ofNullable(batchDto);
+		}
+		return Optional.ofNullable(null);
+
+	}
+
+	@Override
+	public Optional<List<MentorDto>> mentorList() {
+		List<Mentor> mentorFromDb = mentorRepository.findAll();
+		if (mentorFromDb != null) {
+			List<MentorDto> mentorDto = new ArrayList<MentorDto>();
+			for (Mentor mentorEntity : mentorFromDb) {
+				MentorDto mentorDtoCopy = new MentorDto();
+				BeanUtils.copyProperties(mentorEntity, mentorDtoCopy);
+				List<MentorTechnologiesDto> mentorTechnologiesDtos = new ArrayList<MentorTechnologiesDto>();
+
+				for (MentorTechnologies mentorTechnologies : mentorEntity.getSkills()) {
+					MentorTechnologiesDto mentorTechnologiesDto = new MentorTechnologiesDto();
+					BeanUtils.copyProperties(mentorTechnologies, mentorTechnologiesDto);
+					mentorTechnologiesDtos.add(mentorTechnologiesDto);
+				}
+				mentorDtoCopy.setSkillsDto(mentorTechnologiesDtos);
+				mentorDto.add(mentorDtoCopy);
+			}
+			return Optional.ofNullable(mentorDto);
+		}
+		return Optional.ofNullable(null);
+	}
+
+	@Override
+	public Optional<List<RequestDto>> requestList() {
+		List<Request> requestList = requestRepository.findAll();
+		if (requestList != null) {
+			List<RequestDto> requestDto = new ArrayList<RequestDto>();
+
+			for (Request requestEntity : requestList) {
+				RequestDto requestDtoCopy = new RequestDto();
+				BeanUtils.copyProperties(requestDto, requestDtoCopy);
+				requestDto.add(requestDtoCopy);
+
+			}
+			return Optional.ofNullable(requestDto);
+
+		}
+	}
+
+}

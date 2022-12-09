@@ -1,0 +1,9 @@
+package com.lms.entity;
+
+public class Mentor {
+private Integer no;
+private String mentorName;
+private String employeeId;
+private String eMailId;
+private String skills;
+}

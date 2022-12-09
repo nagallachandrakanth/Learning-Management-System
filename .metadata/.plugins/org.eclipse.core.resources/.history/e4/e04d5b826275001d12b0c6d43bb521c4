@@ -1,0 +1,14 @@
+package com.lms.service;
+
+import java.util.Optional;
+
+import com.lms.entity.Employee;
+import com.te.lms.dto.RegistrationDto;
+
+public interface EmsService {
+
+	Employee registrationEmployee(RegistrationDto registrationDto);
+
+	//Optional<Employee> getData(Integer employeeId);
+
+}

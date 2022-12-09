@@ -1,0 +1,30 @@
+package com.te.lms.dto;
+
+import com.te.lms.entity.enums.EducationalType;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@Builder
+
+public class EducationalDetailsDto {
+	private Integer educationalId;
+	private EducationalType educationalType;
+	private Integer yearOfPassing;
+	private String percentage;
+	private String universityName;
+	private String instituteName;
+	private String specialization;
+	private String state;
+
+
+}

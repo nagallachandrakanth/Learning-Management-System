@@ -1,0 +1,17 @@
+
+k
+java:S1128"9Remove this unused import 'javax.persistence.ManyToMany'.(Àğ½8İòéçÎ0Hñ?RMINORZ
+CODE_SMELL
+p
+java:S1128
+"8Remove this unused import 'javax.persistence.JoinTable'.(ùö±µùÿÿÿÿ8¤˜ùçÎ0HÙ@RMINORZ
+CODE_SMELL
+j
+java:S1128"7Remove this unused import 'javax.persistence.OneToOne'.(Ø½ïâ8ÄÚöçÎ0HĞ@RMINORZ
+CODE_SMELL
+c
+java:S1128"0Remove this unused import 'java.util.ArrayList'.(÷‰îƒ8ØèÎ0H€ARMINORZ
+CODE_SMELL
+c
+java:S1128"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ8ØèÎ0H‚ARMINORZ
+CODE_SMELL

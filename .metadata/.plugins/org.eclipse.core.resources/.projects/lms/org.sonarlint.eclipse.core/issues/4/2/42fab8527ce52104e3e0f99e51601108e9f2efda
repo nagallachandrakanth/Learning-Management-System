@@ -1,0 +1,10 @@
+
+d
+java:S1128"8Remove this unused import 'javax.persistence.FetchType'.(‡¯¿H“4RMINORZ
+CODE_SMELL
+t
+java:S1128"HRemove this unused import 'com.fasterxml.jackson.annotation.JsonIgnore'.(ş‘‹„H•4RMINORZ
+CODE_SMELL
+X
+java:S1128",Remove this unused import 'lombok.ToString'.(¹ÂÄÓH—4RMINORZ
+CODE_SMELL
